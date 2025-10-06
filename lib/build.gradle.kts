@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.urbn.nu"
-version = "1.0.0-SNAPSHOT"
+version = "1.0.1-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -98,12 +98,15 @@ publishing {
     repositories {
         maven {
             name = "mavenCentral"
-            credentials(PasswordCredentials::class)
-            // change URLs to point to your repos, e.g. http://my.org/repo
+            val isSnapshot = version.toString().endsWith("SNAPSHOT")
+            if (isSnapshot) {
+                credentials(PasswordCredentials::class)
+            }
+            // Maven Central releases are manual for now
             val releasesRepoUrl = uri(layout.buildDirectory.dir("repos/releases"))
 //            val snapshotsRepoUrl = uri(layout.buildDirectory.dir("repos/snapshots"))
             val snapshotsRepoUrl = uri("https://central.sonatype.com/repository/maven-snapshots/")
-            url = if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
+            url = if (isSnapshot) snapshotsRepoUrl else releasesRepoUrl
         }
     }
 }

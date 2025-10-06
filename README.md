@@ -47,3 +47,39 @@ A set of functions for converting a SqlStatement into the corresponding sql and 
 ```kotlin
     val sqlWithParameters = generateTestSql(sqlStatement)
 ```
+
+## Publishing
+
+### Snapshots
+You will need:
+* A maven central account (See https://central.sonatype.org/register/central-portal/)
+* A verified groupId of "com.urbn.nu" (See https://central.sonatype.org/register/namespace/)
+* A GPG Key for signing artifacts (See https://central.sonatype.org/publish/requirements/gpg/)
+* A portal token (See https://central.sonatype.org/publish/generate-portal-token/)
+
+#### Steps
+1. Ensure `version` property in lib/build.gradle ends with "-SNAPSHOT"
+1. Setup credentials in `$HOME/.gradle/gradle.properties` (See below)
+1. Run `./gradlew :lib:publish`
+
+#### Credentials
+```
+# GPG Signing
+signing.keyId=12345678 # Last 8 digits of GPG key id
+signing.password=<insert gpg key passphrase>
+signing.secretKeyRingFile=$HOME/.gnupg/secring.gpg
+
+# Maven Central Auth
+mavenCentralUsername=<insert portal token username>
+mavenCentralPassword=<insert portal token password>
+```
+
+### Release
+These are the steps to do an official release to maven central. Please test with SNAPSHOT releases before running these steps
+
+#### Steps
+1. Ensure `version` property in lib/build.gradle is properly set to next version
+1. Run `./gradlew :lib:publish`
+1. Run `cd lib/build/repos/releases/`
+1. Run `tar -czvf gradle-publish-sqlkraft-<insert_version_number>.tar.gz com`
+1. Upload tar file using publish portal (See https://central.sonatype.org/publish/publish-portal-upload/)
