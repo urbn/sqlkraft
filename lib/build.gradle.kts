@@ -16,6 +16,18 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.1")
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        apiVersion = "1.8"
+        languageVersion = "1.8"
+        jvmTarget = "17"
+    }
+}
+
 tasks.named<Test>("test") {
     useJUnitPlatform()
 
