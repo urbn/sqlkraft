@@ -83,3 +83,4 @@ These are the steps to do an official release to maven central. Please test with
 1. Run `cd lib/build/repos/releases/`
 1. Run `tar -czvf gradle-publish-sqlkraft-<insert_version_number>.tar.gz com`
 1. Upload tar file using publish portal (See https://central.sonatype.org/publish/publish-portal-upload/)
+1. Tag the current commit and push: `git tag -a v<version> -m "Release <version>"`
