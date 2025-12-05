@@ -122,7 +122,14 @@ sealed interface SqlParameter {
          * Allows the user to use Kotlin string interpolation without losing any information.
          */
         override fun toString(): String {
-            return sqlTokenToString(this)
+            return if (this.value is Serializable) {
+                sqlTokenToString(this)
+            } else {
+                /**
+                 * Some collections like LinkedHashSet are not Serializable, so we create a new List which is Serializable
+                 */
+                sqlTokenToString(this.copy(value = this.value?.toList()))
+            }
         }
     }
 }

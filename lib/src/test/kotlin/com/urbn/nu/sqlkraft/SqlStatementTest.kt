@@ -54,6 +54,22 @@ class SqlStatementTest {
         """.trimIndent()
         assertStatementsEqual(expectedSql, actual)
     }
+
+    @Test
+    fun `Should handle non Serializable collections`() {
+        val paramMap = mapOf("key1" to "value1", "key2" to "value2")
+        val actual = sql(
+            """
+                SELECT * FROM foo
+                    WHERE key = ANY(${sqlParameter(paramMap.keys)})
+            """.trimIndent()
+        )
+        val expectedSql = """
+            SELECT * FROM foo
+                WHERE key = ANY(Array<java.lang.String>::[key1, key2])
+        """.trimIndent()
+        assertStatementsEqual(expectedSql, actual)
+    }
 }
 
 private fun assertStatementsEqual(expected: String, actual: SqlStatement) {
